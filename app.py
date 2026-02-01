@@ -4,9 +4,9 @@ import numpy as np
 import joblib
 
 # Load trained model and encoders
-rf = joblib.load("/content/rf_model.pkl")
-scaler = joblib.load("/content/scaler.pkl")
-le = joblib.load("/content/label_encoder.pkl")
+rf = joblib.load("rf_model.pkl")
+scaler = joblib.load("scaler.pkl")
+le = joblib.load("label_encoder.pkl")
 
 st.title("🩸 Anemia Prediction App")
 
