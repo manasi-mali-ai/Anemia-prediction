@@ -29,8 +29,9 @@ if option == "Upload CSV":
 
 else:
     st.subheader("Manual Patient Data Entry")
+
     age = st.number_input("Age", min_value=1, max_value=120)
-    gender = st.selectbox("Gender", [0,1])  # 0=Female, 1=Male
+    gender = st.selectbox("Gender", ["Female", "Male"])  # better UX
     rbc = st.number_input("RBC (10¹²/L)")
     hgb = st.number_input("HGB (g/dL)")
     hct = st.number_input("HCT (%)")
@@ -39,7 +40,17 @@ else:
     mchc = st.number_input("MCHC (g/dL)")
     rdw = st.number_input("RDW-CV (%)")
 
-    input_data = np.array([[age, gender, rbc, hgb, hct, mcv, mch, mchc, rdw]])
-    scaled = scaler.transform(input_data)
-    pred = rf.predict(scaled)
-    st.write("Prediction:", le.inverse_transform(pred)[0])
+    # Convert gender to numeric (match training)
+    gender_val = 0 if gender == "Female" else 1
+
+    # Submit button
+    if st.button("🔍 Predict Anemia"):
+        input_data = np.array([[
+            age, gender_val, rbc, hgb, hct, mcv, mch, mchc, rdw
+        ]])
+
+        scaled = scaler.transform(input_data)
+        pred = rf.predict(scaled)
+        result = le.inverse_transform(pred)[0]
+
+        st.success(f"🩸 Prediction: **{result}**")
